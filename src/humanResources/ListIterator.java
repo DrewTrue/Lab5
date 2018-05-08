@@ -18,7 +18,7 @@ public class ListIterator<T> implements Iterable<T>{
 
             @Override
             public boolean hasNext() {
-                return index < size && list[index] != null;
+                return index < size;
             }
 
             @Override
