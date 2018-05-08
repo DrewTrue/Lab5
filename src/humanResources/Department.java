@@ -441,7 +441,7 @@ public class Department implements EmployeeGroup{
     @Override
     public boolean remove(Object o) {
         for (int i = 0; i < size; i++) {
-            if (employees[i].getFirstName().equals(o)) {
+            if (employees[i].equals(o)) {
                 if (i < employees.length - 1)
                     System.arraycopy(employees, i + 1, employees, i, size - i - 1);
                 employees[size - 1] = null;
@@ -449,6 +449,7 @@ public class Department implements EmployeeGroup{
                 return true;
             }
         }
+
         return false;
     }
 
