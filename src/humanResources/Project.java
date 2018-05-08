@@ -38,12 +38,14 @@ public class Project implements EmployeeGroup{
     @Override
     public int getPartTimeEmployeesQuantity(){
         int quantity = 0;
+
         Employee[] employees = getEmployees();
         for(int i = 0; i < size; i++) {
             if(employees[i] instanceof PartTimeEmployee) {
                 quantity++;
             }
         }
+
         return quantity;
     }
 
