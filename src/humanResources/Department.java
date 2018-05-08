@@ -300,21 +300,38 @@ public class Department implements EmployeeGroup{
 
     @Override
     public Employee get(int index) {
-        if(index < employees.length)
+        if(index > -1 && index < employees.length)
             return employees[index];
         return null;
     }
 
     @Override
     public Employee set(int index, Employee element) {
-        if(index < employees.length)
+        if(index > -1 && index < employees.length)
             return employees[index] = element;
         return null;
     }
 
     @Override
     public void add(int index, Employee element) {
+        if(element == null)
+            return;
 
+        if (size == this.employees.length) {
+            StaffEmployee[] staffEmployees = new StaffEmployee[this.employees.length * 2];
+            System.arraycopy(this.employees,0,staffEmployees,0,size);
+            this.employees = staffEmployees;
+
+        }
+
+        Employee[] employeesHelper = new Employee[employees.length];
+
+        if(index > -1 && index < employees.length){
+            System.arraycopy(this.employees, 0, employeesHelper, 0, index - 1);
+            employeesHelper[index] = element;
+            System.arraycopy(this.employees, index, employeesHelper, index + 1, size - index);
+            this.employees = employeesHelper;
+        }
     }
 
     @Override
@@ -331,26 +348,46 @@ public class Department implements EmployeeGroup{
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        for(int i = 0; i < size; i++){
+            if(employees[i].equals(o))
+                return i;
+        }
+
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        for(int i = size - 1; i > -1; i--){
+            if(employees[i].equals(o))
+                return i;
+        }
+
+        return -1;
     }
 
     @Override
     public ListIterator<Employee> listIterator() {
-        return null;
+        humanResources.ListIterator<Employee> iterator = new humanResources.ListIterator<>(getEmployees());
+        return (ListIterator<Employee>) iterator.iterator();
     }
 
     @Override
     public ListIterator<Employee> listIterator(int index) {
-        return null;
+        humanResources.ListIterator<Employee> iterator = new humanResources.ListIterator<>(getEmployees(), index);
+        return (ListIterator<Employee>) iterator.iterator();
     }
 
     @Override
     public List<Employee> subList(int fromIndex, int toIndex) {
+        if(fromIndex <= toIndex && fromIndex >= 0 && toIndex <= size) {
+            LinkedList<Employee> list = new LinkedList<>();
+            for (int i = fromIndex; i <= toIndex; i++) {
+                list.addNodeList(employees[i]);
+            }
+            return (List<Employee>) list;
+        }
+
         return null;
     }
 
@@ -376,7 +413,8 @@ public class Department implements EmployeeGroup{
 
     @Override
     public Iterator<Employee> iterator() {
-        return null;
+        humanResources.ListIterator<Employee> iterator = new humanResources.ListIterator<>(getEmployees());
+        return iterator.iterator();
     }
 
     @Override
@@ -445,6 +483,25 @@ public class Department implements EmployeeGroup{
 
     @Override
     public boolean addAll(int index, Collection<? extends Employee> c) {
+        Employee[] employeesCollection = (Employee[]) c.toArray();
+
+        if (size == this.employees.length) {
+            StaffEmployee[] staffEmployees = new StaffEmployee[this.employees.length * 2];
+            System.arraycopy(this.employees,0,staffEmployees,0,size);
+            this.employees = staffEmployees;
+
+        }
+
+        Employee[] employeesHelper = new Employee[employees.length];
+
+        if(index > -1 && index < employees.length){
+            System.arraycopy(this.employees, 0, employeesHelper, 0, index - 1);
+            System.arraycopy(employeesCollection, 0, employeesHelper, index, employeesCollection.length);
+            System.arraycopy(this.employees, index, employeesHelper, index + employeesCollection.length, size - index);
+            this.employees = employeesHelper;
+            return true;
+        }
+
         return false;
     }
 
@@ -463,7 +520,23 @@ public class Department implements EmployeeGroup{
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        Employee[] retainEmployees = (Employee[]) c.toArray();
+        Employee[] currentEmployees = employees;
+        Employee[] newEmployees = new Employee[employees.length];
+        int counter = 0;
+
+        for(int i = 0; i < currentEmployees.length; i++){
+            for(int j = 0; j < retainEmployees.length; j++){
+                if(currentEmployees[i].equals(retainEmployees[i])){
+                    newEmployees[counter] = retainEmployees[j];
+                    counter++;
+                }
+            }
+        }
+
+        employees = newEmployees;
+
+        return counter <= 0;
     }
 
     @Override

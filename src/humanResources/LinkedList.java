@@ -85,7 +85,7 @@ public class LinkedList<T>{
             }
         }
 
-        return counter == 0;
+        return counter <= 0;
     }
 
     public boolean removeNode(T value){

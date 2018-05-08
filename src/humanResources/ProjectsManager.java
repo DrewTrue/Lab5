@@ -1,6 +1,10 @@
 package humanResources;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class ProjectsManager implements GroupsManager{
     private Node<EmployeeGroup> head;
@@ -174,7 +178,7 @@ public class ProjectsManager implements GroupsManager{
     }
 
     @Override
-    public void add(EmployeeGroup group) throws AlreadyAddedException {
+    public void addGroup(EmployeeGroup group) throws AlreadyAddedException {
         EmployeeGroup[] groupsHelper = getEmployeesGroups();
         for(int i = 0; i < groupsHelper.length; i++){
             if(group.equals(groupsHelper[i]))
@@ -192,7 +196,7 @@ public class ProjectsManager implements GroupsManager{
     }
 
     @Override
-    public boolean remove(String name) {
+    public boolean removeGroup(String name) {
         Node<EmployeeGroup> current = head;
         Node<EmployeeGroup> previous = null;
 
@@ -218,7 +222,7 @@ public class ProjectsManager implements GroupsManager{
     }
 
     @Override
-    public int remove(EmployeeGroup group) {
+    public int removeGroup(EmployeeGroup group) {
         int counter = 0;
         Node<EmployeeGroup> current = head;
         Node<EmployeeGroup> previous = null;
@@ -241,5 +245,120 @@ public class ProjectsManager implements GroupsManager{
             current = current.getNext();
         }
         return counter;
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
+    public Iterator<EmployeeGroup> iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
+    @Override
+    public boolean add(EmployeeGroup group) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends EmployeeGroup> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends EmployeeGroup> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public EmployeeGroup get(int index) {
+        return null;
+    }
+
+    @Override
+    public EmployeeGroup set(int index, EmployeeGroup element) {
+        return null;
+    }
+
+    @Override
+    public void add(int index, EmployeeGroup element) {
+
+    }
+
+    @Override
+    public EmployeeGroup remove(int index) {
+        return null;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public ListIterator<EmployeeGroup> listIterator() {
+        return null;
+    }
+
+    @Override
+    public ListIterator<EmployeeGroup> listIterator(int index) {
+        return null;
+    }
+
+    @Override
+    public List<EmployeeGroup> subList(int fromIndex, int toIndex) {
+        return null;
     }
 }

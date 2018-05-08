@@ -1,18 +1,19 @@
 package humanResources;
 
 import java.time.LocalDate;
+import java.util.List;
 
-public interface GroupsManager {
+public interface GroupsManager extends List<EmployeeGroup>{
     int employeesQuantity();
     int groupsQuantity();
-    void add(EmployeeGroup groupable) throws AlreadyAddedException;
+    void addGroup(EmployeeGroup groupable) throws AlreadyAddedException;
     EmployeeGroup getEmployeeGroup(String name);
     EmployeeGroup[] getEmployeesGroups();
     int employeesQuantity(JobTitlesEnum jobTitle);
     EmployeeGroup getEmployeesGroup(String firstName, String secondName);
     Employee mostValuableEmployee();
-    boolean remove(String groupName);
-    int remove(EmployeeGroup group);
+    boolean removeGroup(String groupName);
+    int removeGroup(EmployeeGroup group);
 
     int getPartTimeEmployeesQuantity();
     int getStaffEmployeesQuantity();
