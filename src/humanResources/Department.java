@@ -285,9 +285,9 @@ public class Department implements EmployeeGroup{
         if(employee == null)
             return;
         if (size == this.employees.length) {
-            StaffEmployee[] employees = new StaffEmployee[this.employees.length * 2];
-            System.arraycopy(this.employees,0,employees,0,size);
-            this.employees = employees;
+            StaffEmployee[] staffEmployees = new StaffEmployee[this.employees.length * 2];
+            System.arraycopy(this.employees,0,staffEmployees,0,size);
+            this.employees = staffEmployees;
         }
         for (int i = 0; i < employees.length; i++) {
             if (this.employees[i] == null) {
@@ -300,11 +300,15 @@ public class Department implements EmployeeGroup{
 
     @Override
     public Employee get(int index) {
+        if(index < employees.length)
+            return employees[index];
         return null;
     }
 
     @Override
     public Employee set(int index, Employee element) {
+        if(index < employees.length)
+            return employees[index] = element;
         return null;
     }
 
@@ -315,6 +319,13 @@ public class Department implements EmployeeGroup{
 
     @Override
     public Employee remove(int index) {
+        if (index < employees.length - 1) {
+            System.arraycopy(employees, index + 1, employees, index, size - index - 1);
+            employees[size - 1] = null;
+            size--;
+            return employees[index];
+        }
+
         return null;
     }
 
@@ -345,16 +356,21 @@ public class Department implements EmployeeGroup{
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override
     public boolean contains(Object o) {
+        for(int i = 0; i < size; i++){
+            if(o.equals(employees[i]))
+                return true;
+        }
+
         return false;
     }
 
@@ -365,7 +381,7 @@ public class Department implements EmployeeGroup{
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return employees;
     }
 
     @Override
@@ -374,23 +390,57 @@ public class Department implements EmployeeGroup{
     }
 
     @Override
-    public boolean add(Employee employee) {
-        return false;
+    public boolean add(Employee employee){
+        try {
+            this.addEmployee(employee);
+        } catch (AlreadyAddedException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
     @Override
     public boolean remove(Object o) {
+        for (int i = 0; i < size; i++) {
+            if (employees[i].getFirstName().equals(o)) {
+                if (i < employees.length - 1)
+                    System.arraycopy(employees, i + 1, employees, i, size - i - 1);
+                employees[size - 1] = null;
+                size--;
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        Employee[] employeesCollection = (Employee[]) c.toArray();
+        int counter = 0;
+
+        for (Employee anEmployeesCollection : employeesCollection) {
+            for (Employee employee : employees) {
+                if (anEmployeesCollection.equals(employee))
+                    counter++;
+            }
+        }
+
+        return counter == employeesCollection.length;
     }
 
     @Override
     public boolean addAll(Collection<? extends Employee> c) {
-        return false;
+        Employee[] employeesCollection = (Employee[]) c.toArray();
+        for (Employee anEmployeesCollection : employeesCollection) {
+            try {
+                this.addEmployee(anEmployeesCollection);
+            } catch (AlreadyAddedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -400,7 +450,15 @@ public class Department implements EmployeeGroup{
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        Employee[] employeesCollection = (Employee[]) c.toArray();
+        int counter = 0;
+
+        for (Employee anEmployeesCollection : employeesCollection) {
+            if (remove(anEmployeesCollection))
+                counter++;
+        }
+
+        return counter > 0;
     }
 
     @Override
@@ -410,7 +468,9 @@ public class Department implements EmployeeGroup{
 
     @Override
     public void clear() {
-
+        int employeeSize = employees.length;
+        employees = new Employee[employeeSize];
+        size = 0;
     }
 
     @Override
