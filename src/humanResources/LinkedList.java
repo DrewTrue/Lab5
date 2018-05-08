@@ -16,7 +16,7 @@ public class LinkedList<T>{
     }
 
     public boolean addNodeList(T value){
-        if(!(value instanceof BusinessTravel)){
+        if(!(value instanceof Employee)){
             return false;
         }
         Node<T> node = new Node<T>(value);
@@ -31,9 +31,9 @@ public class LinkedList<T>{
 
     public boolean addNodeSet(T value){
         Node<T> node = new Node<T>(value);
-        BusinessTravel[] travels = getTravels();
-        for(int i = 0; i < travels.length; i++){
-            if(node.getValue().equals(travels[i]) && !(value instanceof BusinessTravel))
+        Employee[] employees = getEmployees();
+        for (Employee employee : employees) {
+            if (node.getValue().equals(employee) && !(value instanceof Employee))
                 return false;
         }
         if(head == null)
@@ -45,16 +45,16 @@ public class LinkedList<T>{
         return true;
     }
 
-    public boolean addAllSet(Collection<? extends BusinessTravel> c){
-        BusinessTravel[] businessTravels = (BusinessTravel[]) c.toArray();
+    public boolean addAllSet(Collection<? extends Employee> c){
+        Employee[] employeesCollection = (Employee[]) c.toArray();
         Node<T> node;
-        BusinessTravel[] travels = getTravels();
+        Employee[] employees = getEmployees();
         int counter = 0;
 
-        for(int j = 0; j < businessTravels.length; j++) {
-            node = new Node<>((T)businessTravels[j]);
-            for (int i = 0; i < travels.length; i++) {
-                if (node.getValue().equals(travels[i]))
+        for(int j = 0; j < employeesCollection.length; j++) {
+            node = new Node<>((T)employeesCollection[j]);
+            for (int i = 0; i < employees.length; i++) {
+                if (node.getValue().equals(employees[i]))
                     break;
             }
             if (head == null)
@@ -69,17 +69,37 @@ public class LinkedList<T>{
         return counter > 0;
     }
 
+    public boolean addAllNode(Collection<? extends Employee> c) {
+        Employee[] employeesCollection = (Employee[]) c.toArray();
+        Node<T> node;
+        Employee[] employees = getEmployees();
+        int counter = 0;
+
+        for (int j = 0; j < employeesCollection.length; j++) {
+            node = new Node<>((T) employeesCollection[j]);
+            if (head == null)
+                head = node;
+            else
+                tail.setNext(node);
+            tail = node;
+            size++;
+            counter++;
+        }
+
+        return counter > 0;
+    }
+
     public boolean retainAll(Collection<?> c) {
-        BusinessTravel[] retainTravels = (BusinessTravel[]) c.toArray();
-        BusinessTravel[] currentTravels = getTravels();
+        Employee[] retainEmployees = (Employee[]) c.toArray();
+        Employee[] currentEmployees = getEmployees();
         int counter = 0;
 
         clearList();
 
-        for(int i = 0; i < currentTravels.length; i++) {
-            for (int j = 0; j < retainTravels.length; j++) {
-                if (currentTravels[i].equals(retainTravels[j])) {
-                    addNodeSet((T) retainTravels[j]);
+        for(int i = 0; i < currentEmployees.length; i++) {
+            for (int j = 0; j < retainEmployees.length; j++) {
+                if (currentEmployees[i].equals(retainEmployees[j])) {
+                    addNodeSet((T) retainEmployees[j]);
                     counter++;
                 }
             }
@@ -117,11 +137,11 @@ public class LinkedList<T>{
         Node<T> current = head;
         Node<T> previous = null;
         int counter = 0;
-        BusinessTravel[] businessTravels = (BusinessTravel[]) c.toArray();
+        Employee[] employeesCollection = (Employee[]) c.toArray();
 
-        for(int i = 0; i < businessTravels.length; i++){
+        for(int i = 0; i < employeesCollection.length; i++){
             while(current != null){
-                if(current.getValue().equals(businessTravels[i])){
+                if(current.getValue().equals(employeesCollection[i])){
                     if(previous != null){
                         previous.setNext(current.getNext());
                         if(current.getNext() == null)
@@ -169,13 +189,13 @@ public class LinkedList<T>{
     }
 
     public boolean containsAll(Collection<?> c){
-        BusinessTravel[] businessTravels = (BusinessTravel[]) c.toArray();
+        Employee[] employeesCollection = (Employee[]) c.toArray();
         Node<T> current = head;
         int counter = 0;
 
-        for(int i = 0; i < businessTravels.length; i++) {
+        for(int i = 0; i < employeesCollection.length; i++) {
             while (current != null) {
-                if (current.getValue().equals(businessTravels[i])){
+                if (current.getValue().equals(employeesCollection[i])){
                     counter++;
                     break;
                 }
@@ -183,19 +203,7 @@ public class LinkedList<T>{
             }
         }
 
-        return counter == businessTravels.length;
-    }
-
-    public BusinessTravel[] getTravels(){
-        BusinessTravel[] travels = new BusinessTravel[size];
-        Node node = head;
-        int counter = 0;
-        while(node != null){
-            travels[counter] = (BusinessTravel) node.getValue();
-            node = node.getNext();
-            counter++;
-        }
-        return travels;
+        return counter == employeesCollection.length;
     }
 
     public Employee[] getEmployees(){
@@ -211,7 +219,7 @@ public class LinkedList<T>{
     }
 
     public Iterator<T> iterator(){
-        ListIterator<T> listIterator = new ListIterator<>((T[])getTravels());
+        ListIterator<T> listIterator = new ListIterator<>((T[])getEmployees());
         return listIterator.iterator();
     }
 }

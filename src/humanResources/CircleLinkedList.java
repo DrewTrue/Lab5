@@ -16,25 +16,6 @@ public class CircleLinkedList<T>{
         return tail;
     }
 
-    public boolean addNodeList(T value){
-        Node<T> node = new Node<T>(value);
-        if(!(value instanceof BusinessTravel)){
-            return false;
-        }
-        if(head == null) {
-            head = node;
-            tail = node;
-            tail.setNext(head);
-        }
-        else {
-            node.setNext(head);
-            tail.setNext(node);
-            tail = node;
-        }
-        size++;
-        return true;
-    }
-
     public boolean addNodeSet(T value){
         Node<T> node = new Node<T>(value);
         BusinessTravel[] businessTravels = getTravels();

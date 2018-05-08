@@ -466,7 +466,7 @@ public class DepartmentsManager implements GroupsManager{
 
     @Override
     public List<EmployeeGroup> subList(int fromIndex, int toIndex) {
-        if(fromIndex <= toIndex && fromIndex >= 0 && toIndex <= size) {
+        if(fromIndex < toIndex && fromIndex >= 0 && toIndex <= size) {
             LinkedList<EmployeeGroup> list = new LinkedList<>();
             for (int i = fromIndex; i <= toIndex; i++) {
                 list.addNodeList(groups[i]);

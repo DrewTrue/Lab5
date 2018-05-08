@@ -380,7 +380,7 @@ public class Department implements EmployeeGroup{
 
     @Override
     public List<Employee> subList(int fromIndex, int toIndex) {
-        if(fromIndex <= toIndex && fromIndex >= 0 && toIndex <= size) {
+        if(fromIndex < toIndex && fromIndex >= 0 && toIndex <= size) {
             LinkedList<Employee> list = new LinkedList<>();
             for (int i = fromIndex; i <= toIndex; i++) {
                 list.addNodeList(employees[i]);

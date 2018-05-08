@@ -7,31 +7,30 @@ import java.util.ListIterator;
 public class Project implements EmployeeGroup{
     private String name;
     private int size;
-    private Node<Employee> head;
-    private Node<Employee> tail;
+    //private Node<Employee> head;
+    //private Node<Employee> tail;
+    private LinkedList<Employee> list;
 
-    private final static Node DEFAULT_HEAD = null;
-    private final static Node DEFAULT_TAIL = null;
     private final static int DEFAULT_SIZE = 0;
 
     public Project(String name){
         this.name = name;
-        //this.head = DEFAULT_HEAD;
-        //this.tail = DEFAULT_TAIL;
         this.size = DEFAULT_SIZE;
+        this.list = new LinkedList<>();
     }
 
     public Project(String name, Employee[] employees){
         this.name = name;
         this.size = employees.length;
-        Node<Employee> node;
+        //Node<Employee> node;
         for(int i = 0; i < employees.length; i++){
-            node = new Node<>(employees[i]);
+            list.addNodeList(employees[i]);
+            /*node = new Node<>(employees[i]);
             if(head == null)
                 head = node;
             else
                 tail.setNext(node);
-            tail = node;
+            tail = node;*/
         }
     }
 
@@ -87,17 +86,12 @@ public class Project implements EmployeeGroup{
     @Override
     public void addEmployee(Employee employee) throws AlreadyAddedException {
         Employee[] employeesHelper = getEmployees();
-        for(int i = 0; i < employeesHelper.length; i++){
-            if(employee.equals(employeesHelper[i])){
+        for (Employee anEmployeesHelper : employeesHelper) {
+            if (employee.equals(anEmployeesHelper)) {
                 throw new AlreadyAddedException();
             }
         }
-        Node<Employee> node = new Node<>(employee);
-        if(head == null)
-            head = node;
-        else
-            tail.setNext(node);
-        tail = node;
+        list.addNodeList(employee);
         size++;
     }
 
@@ -106,7 +100,15 @@ public class Project implements EmployeeGroup{
         Employee[] employees = new Employee[size];
         if(size > 1) {
             //quickSort(employees, 0, size - 1);
-            Arrays.sort(employees);
+            Arrays.sort(employees, ((Comparator<Employee>) Employee::compareTo).reversed());
+
+            /*Arrays.sort(employees, new Comparator<Employee>() {
+                @Override
+                public int compare(Employee o1, Employee o2) {
+                    return o1.compareTo(o2);
+                }
+            }.reversed());*/
+
             return employees;
         }
         return employees;
@@ -114,7 +116,7 @@ public class Project implements EmployeeGroup{
 
     @Override
     public Employee[] getEmployees(){
-        Employee[] employees = new Employee[size];
+        /*Employee[] employees = new Employee[size];
         Node node = head;
         int counter = 0;
         while(node != null){
@@ -122,7 +124,8 @@ public class Project implements EmployeeGroup{
             node = node.getNext();
             counter++;
         }
-        return employees;
+        return employees;*/
+        return list.getEmployees();
     }
 
     @Override
@@ -132,33 +135,20 @@ public class Project implements EmployeeGroup{
 
     @Override
     public boolean removeEmployee(String firstName, String secondName){
-        Node<Employee> current = head;
-        Node<Employee> previous = null;
+        Employee[] employees = getEmployees();
 
-        while(current != null){
-            if(current.getValue().getFirstName().equals(firstName) && current.getValue().getSecondName().equals(secondName)){
-                if(previous != null){
-                    previous.setNext(current.getNext());
-                    if(current.getNext() == null)
-                        tail = previous;
-                }
-                else{
-                    head = head.getNext();
-                    if(head == null)
-                        tail = null;
-                }
-                size--;
+        for(int i = 0; i < size; i++){
+            if(employees[i].getFirstName().equals(firstName) && employees[i].getSecondName().equals(secondName) && list.removeNode(employees[i])){
                 return true;
             }
-            previous = current;
-            current = current.getNext();
         }
+
         return false;
     }
 
     @Override
     public boolean removeEmployee(Employee employee){
-        Node<Employee> current = head;
+        /*Node<Employee> current = head;
         Node<Employee> previous = null;
 
         while(current != null){
@@ -178,8 +168,8 @@ public class Project implements EmployeeGroup{
             }
             previous = current;
             current = current.getNext();
-        }
-        return false;
+        }*/
+        return list.removeNode(employee);
     }
 
     @Override
@@ -232,11 +222,18 @@ public class Project implements EmployeeGroup{
 
     @Override
     public Employee get(int index) {
+        if(index > -1 && index < size) {
+            Employee[] employees = getEmployees();
+            return employees[index];
+        }
+
         return null;
     }
 
     @Override
     public Employee set(int index, Employee element) {
+
+
         return null;
     }
 
@@ -252,52 +249,77 @@ public class Project implements EmployeeGroup{
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        Employee[] employees = getEmployees();
+        for(int i = 0; i < size; i++){
+            if(employees[i].equals(o))
+                return i;
+        }
+
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        Employee[] employees = getEmployees();
+        for(int i = size - 1; i > -1; i--){
+            if(employees[i].equals(o))
+                return i;
+        }
+
+        return -1;
     }
 
     @Override
     public ListIterator<Employee> listIterator() {
-        return null;
+        humanResources.ListIterator<Employee> iterator = new humanResources.ListIterator<>(getEmployees());
+        return (ListIterator<Employee>) iterator.iterator();
     }
 
     @Override
     public ListIterator<Employee> listIterator(int index) {
-        return null;
+        humanResources.ListIterator<Employee> iterator = new humanResources.ListIterator<>(getEmployees(), index);
+        return (ListIterator<Employee>) iterator.iterator();
     }
 
     @Override
     public List<Employee> subList(int fromIndex, int toIndex) {
+        Employee[] employees = getEmployees();
+
+        if(fromIndex < toIndex && fromIndex >= 0 && toIndex <= size) {
+            LinkedList<Employee> list = new LinkedList<>();
+            for (int i = fromIndex; i <= toIndex; i++) {
+                list.addNodeList(employees[i]);
+            }
+            return (List<Employee>) list;
+        }
+
         return null;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        return list.contains((Employee) o);
     }
 
     @Override
     public Iterator<Employee> iterator() {
-        return null;
+        humanResources.ListIterator<Employee> iterator = new humanResources.ListIterator<>(getEmployees());
+        return iterator.iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return getEmployees();
     }
 
     @Override
@@ -307,22 +329,22 @@ public class Project implements EmployeeGroup{
 
     @Override
     public boolean add(Employee employee) {
-        return false;
+        return list.addNodeList(employee);
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        return list.removeNode((Employee) o);
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        return list.containsAll(c);
     }
 
     @Override
     public boolean addAll(Collection<? extends Employee> c) {
-        return false;
+        return list.addAllNode(c);
     }
 
     @Override
@@ -332,17 +354,17 @@ public class Project implements EmployeeGroup{
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        return list.removeAll(c);
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        return list.retainAll(c);
     }
 
     @Override
     public void clear() {
-
+        list.clearList();
     }
 
     @Override
