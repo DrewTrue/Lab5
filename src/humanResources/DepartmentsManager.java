@@ -261,6 +261,11 @@ public class DepartmentsManager implements GroupsManager{
 
     @Override
     public <T> T[] toArray(T[] a) {
+        if(a.length < size)
+            a = (T[]) new EmployeeGroup[size];
+
+        System.arraycopy(groups, 0, a, 0, size);
+
         return null;
     }
 

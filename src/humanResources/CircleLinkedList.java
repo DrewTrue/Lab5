@@ -37,7 +37,7 @@ public class CircleLinkedList<T>{
         return true;
     }
 
-    public boolean addAllSet(Collection<? extends BusinessTravel> c){
+    public boolean addAllSets(Collection<? extends BusinessTravel> c){
         BusinessTravel[] businessTravels = (BusinessTravel[]) c.toArray();
         Node<T> node;
         BusinessTravel[] travels = getTravels();
@@ -202,7 +202,12 @@ public class CircleLinkedList<T>{
     }
 
     public Iterator<T> iterator(){
+        ListIterator<T> iterator = new ListIterator<>((T[])getTravels());
+        return iterator.iterator();
+    }
+
+    public ListIterator<T> listIterator(){
         ListIterator<T> listIterator = new ListIterator<>((T[])getTravels());
-        return listIterator.iterator();
+        return (ListIterator<T>) listIterator.iterator();
     }
 }

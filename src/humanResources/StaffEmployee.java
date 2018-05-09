@@ -62,7 +62,13 @@ public class StaffEmployee extends Employee implements BusinessTraveller {
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        BusinessTravel[] businessTravels = getTravels();
+        if(a.length < size())
+            a = (T[]) new BusinessTravel[businessTravels.length];
+
+        System.arraycopy(businessTravels, 0, a, 0, size());
+
+        return a;
     }
 
     @Override
@@ -82,7 +88,7 @@ public class StaffEmployee extends Employee implements BusinessTraveller {
 
     @Override
     public boolean addAll(Collection<? extends BusinessTravel> c) {
-        return businessTravelsSet.addAllSet(c);
+        return businessTravelsSet.addAllSets(c);
     }
 
     @Override

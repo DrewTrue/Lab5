@@ -2,7 +2,7 @@ package humanResources;
 
 public class NegativeSizeException extends NegativeArraySizeException {
     public NegativeSizeException(){
-        super("Negative size!");
+        super("The size is negative!");
     }
 
     public NegativeSizeException(String message){

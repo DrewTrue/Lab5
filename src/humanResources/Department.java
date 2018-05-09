@@ -424,7 +424,12 @@ public class Department implements EmployeeGroup{
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        if(a.length < size)
+            a = (T[]) new Employee[size];
+
+        System.arraycopy(employees, 0 , a, 0, size);
+
+        return a;
     }
 
     @Override

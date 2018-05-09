@@ -9,18 +9,9 @@ public class Main {
         String[] array = new String[]{"s", "Ad", "asd", "rq", "asdgg"};
         ListIterator<String> listIterator = new ListIterator<>(array);
         Iterator<String> it = listIterator.iterator();
+
         while (it.hasNext()){
             System.out.println(it.next());
-        }
-        BusinessTravel businessTravel = new BusinessTravel();
-        BusinessTravel businessTravel2 = new BusinessTravel();
-
-        LinkedList<BusinessTravel> linkedList = new LinkedList<>();
-        linkedList.addNodeList(businessTravel);
-        linkedList.addNodeList(businessTravel2);
-        Iterator<BusinessTravel> i = linkedList.iterator();
-        while(i.hasNext()){
-            System.out.println(i.next());
         }
 
         List<Integer> araBringGoat = new ArrayList<>();
@@ -36,5 +27,16 @@ public class Main {
         System.out.println(araBringGoat.retainAll(araBringGoat2));
         System.out.println(araBringGoat.isEmpty());
         System.out.println(araBringGoat.contains(111));
+
+        Department department1 = new Department("a");
+        Department department2 = new Department("b");
+        Department department3 = new Department("c");
+
+        Department[] departments = new Department[]{department1,department2,department3};
+
+        for (Department department:departments) {
+            System.out.println(department.getName());
+        }
+
     }
 }
